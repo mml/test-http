@@ -11,5 +11,7 @@ WriteMakefile(
         Class::Field          => 0,
         LWP::UserAgent        => 0,
         Test::More            => 0,
+        Text::Balanced        => 0,
+        Filter::Simple        => 0,
     },
 );
