@@ -197,6 +197,7 @@ FILTER {
         my @body;
 
         while_line {
+            no warnings 'exiting';
             next if /^\s*#/;
             if ( $state eq 'first line' ) {
                 /^\s*>> ([A-Z]+) (.*)/
