@@ -153,6 +153,9 @@ FILTER {
 #
 # Each of these two, in turn, is a linewise finite state machine.
 {
+    # This quells the warning from using a 'last' to exit a 'while_line' loop.
+    no warnings 'exiting';
+
     my @lines;
     my $result;
 
@@ -197,7 +200,6 @@ FILTER {
         my @body;
 
         while_line {
-            no warnings 'exiting';
             next if /^\s*#/;
             if ( $state eq 'first line' ) {
                 /^\s*>> ([A-Z]+) (.*)/
