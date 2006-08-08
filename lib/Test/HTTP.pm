@@ -2,7 +2,7 @@ package Test::HTTP;
 use warnings;
 use strict;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 =head1 NAME
 
@@ -60,6 +60,8 @@ use HTTP::Request;
 use Test::More;
 
 our $UaClass = 'LWP::UserAgent';
+our $BasicUsername;
+our $BasicPassword;
 
 =head1 CONSTRUCTOR
 
@@ -105,12 +107,22 @@ The most recently received L<HTTP::Response>.
 
 The User Agent object (usually an L<LWP::UserAgent>).
 
+=head2 $test->username
+
+=head2 $test->password
+
+A username and password to be used for HTTP basic auth.  Default to the values
+of C<$Test::HTTP::BasicUsername> and C<$Test::HTTP::BasicPassword>,
+respectively.  If both are undef, then authentication is not attempted.
+
 =cut
 
 field 'name';
 field 'request';
 field 'response';
 field 'ua', -init => '$self->_ua_class->new';
+field 'username', -init => '$Test::HTTP::BasicUsername';
+field 'password', -init => '$Test::HTTP::BasicPassword';
 
 =head1 REQUEST METHODS
 
@@ -178,6 +190,8 @@ before running it with C<< $test->run_request >>.
 sub new_request {
     my ( $self, @request_args ) = @_;
     $self->request( HTTP::Request->new(@request_args) );
+    $self->request->authorization_basic($self->username, $self->password)
+        if (defined $self->username) || (defined $self->password);
     return $self->request;
 }
 
