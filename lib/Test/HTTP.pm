@@ -2,7 +2,7 @@ package Test::HTTP;
 use warnings;
 use strict;
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 =head1 NAME
 
@@ -52,6 +52,7 @@ status codes, headers, and message bodies.
 
 =cut
 
+use base 'Exporter';
 use Carp 'croak';
 use Class::Field 'field';
 use Filter::Util::Call;
@@ -62,14 +63,21 @@ my $Builder = Test::Builder->new;
 our $BasicPassword;
 our $BasicUsername;
 our $UaClass = 'LWP::UserAgent';
+our $TODO = undef;
+our @EXPORT = qw($TODO);
 
 sub _partition(&@);
 
 sub import {
     my $class = shift;
 
+    $Builder->exported_to(scalar caller);
+
     my ( $syntax, $nargs ) = _partition { $_ eq '-syntax' } @_;
     $Builder->plan(@$nargs);
+
+    # WARNING: This only exports the stuff in @EXPORT.
+    $class->export_to_level(1, $class);
 
     if (@$syntax) {
         @_ = ();
