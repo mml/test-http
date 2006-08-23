@@ -2,7 +2,7 @@ package Test::HTTP;
 use warnings;
 use strict;
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 =head1 NAME
 
@@ -52,16 +52,31 @@ status codes, headers, and message bodies.
 
 =cut
 
-use base 'Test::Builder::Module';
-
 use Carp 'croak';
 use Class::Field 'field';
+use Filter::Util::Call;
 use HTTP::Request;
-use Test::More;
+use Test::Builder;
 
-our $UaClass = 'LWP::UserAgent';
-our $BasicUsername;
+my $Builder = Test::Builder->new;
 our $BasicPassword;
+our $BasicUsername;
+our $UaClass = 'LWP::UserAgent';
+
+sub _partition(&@);
+
+sub import {
+    my $class = shift;
+
+    my ( $syntax, $nargs ) = _partition { $_ eq '-syntax' } @_;
+    $Builder->plan(@$nargs);
+
+    if (@$syntax) {
+        @_ = ();
+        require Test::HTTP::Syntax;
+        goto &Test::HTTP::Syntax::import;
+    }
+}
 
 =head1 CONSTRUCTOR
 
@@ -84,6 +99,18 @@ sub _initiliaze {
     my ( $self, $name ) = @_;
 
     $self->name($name);
+}
+
+# Given a predicate and a list, return two listrefs.  The elements in the
+# first listref satisfy the predicate, and those in the second do not.  The
+# predicate acts on a localized value of $_ rather than any arguments to it.
+sub _partition(&@) {
+    my ( $pred, @l )  = @_;
+    my ( $tl,   $fl ) = ( [], [] );
+
+    push @{ &$pred ? $tl : $fl }, $_ for @l;
+
+    return ( $tl, $fl );
 }
 
 =head1 OBJECT FIELDS
@@ -200,7 +227,7 @@ sub new_request {
 =head2 $test->status_code_is($code [, $description]);
 
 Compares the last response status code with the given code using
-C<Test::More::is>.
+C<Test::Builder->is>.
 
 =cut
 
@@ -210,13 +237,13 @@ sub status_code_is {
 
     $description ||= $self->name . " status is $expected_code.";
 
-    Test::More::is( $self->response->code, $expected_code, $description );
+    $Builder->is_eq( $self->response->code, $expected_code, $description );
 }
 
 =head2 $test->header_is($header_name, $value [, $description]);
 
 Compares the response header C<$header_name> with the value C<$value> using
-C<Test::More::is>.
+C<Test::Builder->is>.
 
 =cut
 
@@ -226,7 +253,7 @@ sub header_is {
 
     $description ||= $self->name . " $header_name matches '$expected_value'.";
 
-    Test::More::is(
+    $Builder->is_eq(
         $self->response->header($header_name),
         $expected_value,
         $description
@@ -236,7 +263,7 @@ sub header_is {
 =head2 $test->header_like($header_name, $regex, [, $description]);
 
 Compares the response header C<$header_name> with the regex C<$regex> using
-C<Test::More::like>.
+C<Test::Builder->like>.
 
 =cut
 
@@ -246,7 +273,7 @@ sub header_like {
 
     $description ||= $self->name . " $header_name matches $regex.";
 
-    Test::More::like(
+    $Builder->like(
         $self->response->header($header_name),
         $regex,
         $description
@@ -265,7 +292,7 @@ sub body_is {
 
     $description ||= $self->name . " body is '$expected_body'.";
 
-    Test::More::is( $self->response->content, $expected_body, $description );
+    $Builder->is_eq( $self->response->content, $expected_body, $description );
 }
 
 =head2 $test->body_like($regex [, $description]);
@@ -280,7 +307,7 @@ sub body_like {
 
     $description ||= $self->name . " body matches $regex.";
 
-    Test::More::like( $self->response->content, $regex, $description );
+    $Builder->like( $self->response->content, $regex, $description );
 }
 
 =head1 USER AGENT GENERATION

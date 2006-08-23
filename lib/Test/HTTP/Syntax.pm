@@ -9,7 +9,13 @@ Test::HTTP::Syntax - HTTP tests in a natural style.
 =head1 SYNOPSIS
 
   use Test::HTTP::Syntax;
-  use Test::HTTP test => 9;
+  use Test::HTTP tests => 9;
+
+or
+
+  use Test::HTTP '-syntax', tests => 9;
+
+then
 
   test_http 'echo test' {
       >> GET /echo/foo
@@ -21,6 +27,7 @@ Test::HTTP::Syntax - HTTP tests in a natural style.
       << foo
   }
 
+
 =head1 DESCRIPTION
 
 L<Test::HTTP::Syntax> is a source filter module designed to work with
@@ -29,6 +36,9 @@ tests in a way that looks a lot like HTTP request and response packets.
 
 All this module does is translate the linewise packet syntax into calls to
 L<Test::HTTP>.
+
+The actual module used for the tests can be set by setting the variable
+C<$Test::HTTP::Syntax::Test_package>.  It defaults to C<Test::HTTP>.
 
 =head1 SYNTAX
 
@@ -126,6 +136,8 @@ packet.
 use Filter::Simple;
 use Text::Balanced ':ALL';
 
+our $Test_package = 'Test::HTTP';
+
 FILTER {
     my $result;
     my $n;
@@ -170,7 +182,7 @@ FILTER {
 
         $block =~ s{^\{\n}
 {\{
-    my \$test = Test::HTTP->new($name);
+    my \$test = $Test_package->new($name);
 };
         $block =~ s/\}\z//;
 
