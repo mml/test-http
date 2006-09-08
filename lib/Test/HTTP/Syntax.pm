@@ -214,7 +214,7 @@ FILTER {
         while_line {
             next if /^\s*#/;
             if ( $state eq 'first line' ) {
-                /^\s*>> ([A-Z]+) (.*)/
+                /^\s*>> (\S+) (.*)/
                     or die "unparseable first request line: '$_'\n";
                 $result .= "    \$test->new_request($1 => \"$2\");\n";
                 $state = 'in request';
