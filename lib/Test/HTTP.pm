@@ -2,7 +2,7 @@ package Test::HTTP;
 use warnings;
 use strict;
 
-our $VERSION = 0.05;
+our $VERSION = 0.06;
 
 =head1 NAME
 
@@ -55,6 +55,7 @@ status codes, headers, and message bodies.
 use base 'Exporter';
 use Carp 'croak';
 use Class::Field 'field';
+use Encode qw(encode_utf8);
 use Filter::Util::Call;
 use HTTP::Request;
 use Test::Builder;
@@ -223,8 +224,8 @@ before running it with C<< $test->run_request >>.
 =cut
 
 sub new_request {
-    my ( $self, @request_args ) = @_;
-    $self->request( HTTP::Request->new(@request_args) );
+    my ( $self, $method, $uri ) = @_;
+    $self->request( HTTP::Request->new( $method => encode_utf8($uri) ) );
     $self->request->authorization_basic($self->username, $self->password)
         if (defined $self->username) || (defined $self->password);
     return $self->request;
