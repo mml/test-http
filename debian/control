@@ -1,0 +1,18 @@
+Source: libtest-http-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 4.0.2), libwww-perl, libclass-field-perl, libtest-simple-perl (>= 0.64)
+Build-Depends-Indep: perl (>= 5.8.0-7)
+Maintainer: Matthew O'Connor <matthew.oconnor@socialtext.com>
+Standards-Version: 3.6.1
+
+Package: libtest-http-perl
+Architecture: all
+Depends: ${perl:Depends}, libtest-simple-perl (>= 0.64), libclass-field-perl, libwww-perl
+Description:  Test HTTP interactions.
+ Test::HTTP is designed to make it easier to write tests which are mainly
+ about HTTP-level things, such as REST-type services.
+ .
+ Each Test::HTTP object can contain state about a current request and its
+ response.  This allows convenient shorthands for sending requests, checking
+ status codes, headers, and message bodies.

@@ -1,0 +1,10 @@
+This is the debian package for the Test::HTTP module.  It was created by
+Matthew O'Connor <matthew.oconnor@socialtext.net> using dh-make-perl.
+
+The upstream author is: 
+
+Socialtext, Inc. <code@socialtext.com>.
+
+License:
+
+Unknown
