@@ -3,8 +3,8 @@ use strict;
 
 use Test::HTTP '-syntax', tests => 2;
 
-test_http "mml" {
-    >> GET http://lazlo.bloomington.in.us/mml/
+test_http "Socialtext" {
+    >> GET http://www.socialtext.com/
 
     << 200
 }
@@ -14,7 +14,7 @@ test_http "mml" {
 test_http "method in variable" {
     my $method = 'GET';
 
-    >> $method http://lazlo.bloomington.in.us/mml/
+    >> $method http://www.socialtext.com/
 
     << 200
 }

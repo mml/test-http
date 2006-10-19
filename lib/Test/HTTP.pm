@@ -2,7 +2,7 @@ package Test::HTTP;
 use warnings;
 use strict;
 
-our $VERSION = 0.06;
+our $VERSION = 0.07;
 
 =head1 NAME
 
@@ -263,7 +263,7 @@ sub header_is {
     $description ||= $self->name . " $header_name matches '$expected_value'.";
 
     $Builder->is_eq(
-        $self->response->header($header_name),
+        scalar $self->response->header($header_name),
         $expected_value,
         $description
     );
@@ -283,7 +283,7 @@ sub header_like {
     $description ||= $self->name . " $header_name matches $regex.";
 
     $Builder->like(
-        $self->response->header($header_name),
+        scalar $self->response->header($header_name),
         $regex,
         $description
     );
