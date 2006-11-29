@@ -55,7 +55,7 @@ status codes, headers, and message bodies.
 use base 'Exporter';
 use Carp 'croak';
 use Class::Field 'field';
-use Encode qw(encode_utf8);
+use Encode qw(encode_utf8 is_utf8);
 use Filter::Util::Call;
 use HTTP::Request;
 use Test::Builder;
@@ -209,6 +209,14 @@ the resulting L<HTTP::Response>.
 sub run_request {
     my ( $self, @request_args ) = @_;
     $self->new_request(@request_args) if @request_args;
+    if ($self->request->method ne 'GET') {
+        if (is_utf8($self->request->content)) {
+            my $content = $self->request->content;
+            $content = encode_utf8($content);
+            $self->request->content($content);
+        }
+    }
+
     $self->response( $self->ua->simple_request( $self->request ) );
     croak( $self->request->uri . ': ' . $self->response->status_line )
         if $self->response->status_line =~ /500 Can't connect to /;
@@ -301,7 +309,7 @@ sub body_is {
 
     $description ||= $self->name . " body is '$expected_body'.";
 
-    $Builder->is_eq( $self->response->content, $expected_body, $description );
+    $Builder->is_eq( $self->response->decoded_content, $expected_body, $description );
 }
 
 =head2 $test->body_like($regex [, $description]);
@@ -316,7 +324,7 @@ sub body_like {
 
     $description ||= $self->name . " body matches $regex.";
 
-    $Builder->like( $self->response->content, $regex, $description );
+    $Builder->like( $self->response->decoded_content, $regex, $description );
 }
 
 =head1 USER AGENT GENERATION
