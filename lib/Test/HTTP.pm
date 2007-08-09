@@ -2,7 +2,7 @@ package Test::HTTP;
 use warnings;
 use strict;
 
-our $VERSION = 0.09;
+our $VERSION = 0.10;
 
 =head1 NAME
 
@@ -60,7 +60,7 @@ use Filter::Util::Call;
 use HTTP::Request;
 use Test::Builder;
 
-my $Builder = Test::Builder->new;
+our $Builder = Test::Builder->new;
 our $BasicPassword;
 our $BasicUsername;
 our $UaClass = 'LWP::UserAgent';
