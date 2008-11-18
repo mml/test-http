@@ -2,7 +2,7 @@ package Test::HTTP;
 use warnings;
 use strict;
 
-our $VERSION = 0.10;
+our $VERSION = 0.13;
 
 =head1 NAME
 
@@ -232,8 +232,9 @@ before running it with C<< $test->run_request >>.
 =cut
 
 sub new_request {
-    my ( $self, $method, $uri ) = @_;
-    $self->request( HTTP::Request->new( $method => encode_utf8($uri) ) );
+    my ( $self, $method, $uri, @args ) = @_;
+    $self->request(
+        HTTP::Request->new( $method => encode_utf8($uri), @args ) );
     $self->request->authorization_basic($self->username, $self->password)
         if (defined $self->username) || (defined $self->password);
     return $self->request;

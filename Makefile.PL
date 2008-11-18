@@ -4,7 +4,6 @@ WriteMakefile(
     ABSTRACT     => 'Testing for HTTP services',
     AUTHOR       => 'Socialtext <socialtext@socialtext.com>',
     VERSION_FROM => 'lib/Test/HTTP.pm',
-    PREREQ_FATAL => 1,
     PREREQ_PM    => {
         Test::Builder::Module => 0,
         Carp                  => 0,
@@ -13,5 +12,6 @@ WriteMakefile(
         Test::More            => 0,
         Text::Balanced        => 0,
         Filter::Simple        => 0,
+        Encode                => 0,
     },
 );

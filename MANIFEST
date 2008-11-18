@@ -6,3 +6,4 @@ t/00-compile.t
 t/01-basic.t
 t/10-syntax.t
 t/20-todo.t
+META.yml                                 Module meta-data (added by MakeMaker)
