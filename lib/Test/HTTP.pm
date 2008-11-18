@@ -89,7 +89,7 @@ sub import {
 
 =head1 CONSTRUCTOR
 
-    Test::HTTP->new($name);
+=head2 Test::HTTP->new($name);
 
 C<$name> is a name for the test, used to help write test descriptions when you
 don't specify them.
