@@ -1,5 +1,19 @@
-commit 7699c3994a32ca9b852afb33bafb4d0c0eb73500
-Author: Matt Liggett <mml@pobox.com>
-Date:   Tue Nov 18 15:17:18 2008 -0500
+Tue Nov 18 2008
 
-    Initial commit
+Matt Liggett <mml@pobox.com>
+
+    Added a POD coverage test.
+
+    Added POD test.
+
+    Added a simple example.
+
+    Fix license and authorship info.
+
+    Added README
+    Corrected AUTHOR entry
+    Spelled out license
+
+    Add Changelog
+
+    Initial import from v0.13
