@@ -1,0 +1,18 @@
+Test::HTTP is designed to make it easier to write tests which are
+mainly about HTTP-level things, such as REST-type services.  In
+particular, with the syntax filter in Test::HTTP::Syntax, it becomes
+extremely natural to write HTTP tests:
+
+  use Test::HTTP '-syntax', tests => 9;
+
+  test_http 'echo test' {
+      >> GET http://localhost:12345/echo/foo
+      >> Accept: text/plain
+
+      << 200
+      ~< Content-type: ^text/plain\b
+      <<
+      << foo
+  }
+
+See the included POD for further documentation.
