@@ -340,13 +340,13 @@ L<Test::HTTP>
 
 =head1 AUTHOR
 
-Socialtext, Inc. C<< <code@socialtext.com> >>
+Matt Liggett C<< <mml@pobox.com> >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Socialtext, Inc., all rights reserved.
+Copyright 2006 Socialtext, Inc.
 
-SOME SUITABLE LICENSE TERMS GO HERE.
+Same terms as Perl.
 
 =cut
 
