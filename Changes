@@ -1,3 +1,9 @@
+Wed Feb 17 2010
+
+    Version 0.15
+
+    'use utf8' in test file which contains UTF-8.  Fixes commonly failing test.
+
 Tue Nov 18 2008
 
 Matt Liggett <mml@pobox.com>
