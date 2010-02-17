@@ -1,6 +1,8 @@
 use warnings;
 use strict;
 
+use utf8;
+
 use Test::HTTP tests => 4;
 
 {
